@@ -2,10 +2,8 @@
 # Co-authored with CoCo
 import streamlit as st
 import requests
+from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col
-
-cnx = st.connection("snowflake")
-session = cnx.session()
 
 st.title(":cup_with_straw: Customize Your Smoothie! :cup_with_straw:")
 st.write("Choose the fruits you want in your custom Smoothie!")
@@ -27,6 +25,7 @@ if ingredients:
     for fruit_chosen in ingredients:
         ingredients_string += fruit_chosen + ' '
 
+        st.subheader(fruit_chosen + ' Nutrition Information')
         smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/" + fruit_chosen)
         sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
 
